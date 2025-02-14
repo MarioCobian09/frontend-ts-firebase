@@ -33,19 +33,11 @@ export default {
             password: this.password
           }
         })
-
-        this.$store.commit('alert/setAlert', {
-          message: 'Inicio de Sesión Correcto',
-          type: 'success'
-        })
+        this.$store.dispatch('alert/triggerAlert', { message: 'Inicio de Sesión Correcto', type: 'success' })
 
         this.$router.push('/dashboard')
       } catch (error) {
-        console.log(error)
-        this.$store.commit('alert/setAlert', {
-          message: error.message,
-          type: 'error'
-        })
+        this.$store.dispatch('alert/triggerAlert', { message: error.message, type: 'error' })
       }
     }
   }

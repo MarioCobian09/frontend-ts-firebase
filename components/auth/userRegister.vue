@@ -14,14 +14,14 @@
         </v-col>
         <v-col cols="4">
           <v-text-field
-            v-model="user.apaterno"
+            v-model="user.apPaterno"
             label="Ap. Paterno"
             outlined
           />
         </v-col>
         <v-col cols="4">
           <v-text-field
-            v-model="user.amaterno"
+            v-model="user.apMaterno"
             label="Ap. Materno"
             outlined
           />
@@ -87,8 +87,8 @@ export default {
     return {
       user: {
         nombre: '',
-        apaterno: '',
-        amaterno: '',
+        apPaterno: '',
+        apMaterno: '',
         direccion: '',
         telefono: '',
         ciudad: '',
@@ -100,10 +100,16 @@ export default {
   },
   methods: {
     async register () {
-      const response = await this.$axios.post('/users/create', this.user)
-      console.log(response)
-      if (response && response.data && response.data.id) {
-        this.$store.commit('alert/setAlert', { message: 'Usuario Registrado Satisfactoriamente', type: 'success' })
+      try {
+        const response = await this.$axios.post('/users/create', this.user)
+        console.log(response)
+        if (response && response.data && response.data.id) {
+          this.$store.dispatch('alert/triggerAlert', { message: 'Usuario Registrado Satisfactoriamente', type: 'success' })
+        } else {
+          this.$store.dispatch('alert/triggerAlert', { message: 'Ocurrió un error, inténtelo mas tarde', type: 'error' })
+        }
+      } catch (error) {
+        this.$store.dispatch('alert/triggerAlert', { message: 'Ocurrió un error, inténtelo mas tarde', type: 'error' })
       }
     }
   }
